@@ -2,9 +2,6 @@ package service
 
 import (
 	"fmt"
-	"io"
-	"net/http"
-	"os"
 
 	"github.com/zier/kuriboh/config"
 )
@@ -12,12 +9,13 @@ import (
 // Kuriboh ...
 type Kuriboh struct {
 	*config.Config
-	Scrapper NiceoppaiScrap
+	Scrapper   NiceoppaiScrap
+	Downloader Downloader
 }
 
 // New ...
-func New(c *config.Config, ns NiceoppaiScrap) *Kuriboh {
-	return &Kuriboh{c, ns}
+func New(c *config.Config, ns NiceoppaiScrap, dl Downloader) *Kuriboh {
+	return &Kuriboh{c, ns, dl}
 }
 
 // Start ...
@@ -35,35 +33,11 @@ func (k *Kuriboh) Start() error {
 	}
 
 	for pageNumber, urlPath := range listImages {
-		if err := downloadImage(urlPath, fmt.Sprintf("./%s/%d/", cartoonName, chapterNumber), fmt.Sprintf("%d.jpg", pageNumber)); err != nil {
+		if err := k.Downloader.Image(urlPath, fmt.Sprintf("./%s/%d/", cartoonName, chapterNumber), fmt.Sprintf("%d.jpg", pageNumber)); err != nil {
 			return err
 		}
 
 	}
-
-	return nil
-}
-
-func downloadImage(url, pathName, fileName string) error {
-	os.MkdirAll(pathName, os.ModePerm)
-
-	response, err := http.Get(url)
-	if err != nil {
-		return err
-	}
-
-	defer response.Body.Close()
-
-	file, err := os.Create(fmt.Sprintf("%s%s", pathName, fileName))
-	if err != nil {
-		return err
-	}
-
-	_, err = io.Copy(file, response.Body)
-	if err != nil {
-		return err
-	}
-	file.Close()
 
 	return nil
 }

@@ -62,7 +62,7 @@ func New() *Config {
 	return config
 }
 
-// Run ...
+// ReadCLIParams ...
 func (c *Config) ReadCLIParams() error {
 	return c.CLI.Run(os.Args)
 
