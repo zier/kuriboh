@@ -24,7 +24,6 @@ func (d *Downloader) Image(url, pathName, fileName string) error {
 	if err != nil {
 		return err
 	}
-
 	defer response.Body.Close()
 
 	file, err := os.Create(fmt.Sprintf("%s%s", pathName, fileName))
