@@ -28,23 +28,19 @@ func New() *Config {
 	app.Flags = []cli.Flag{
 		cli.StringFlag{
 			Name:  "path, p",
-			Value: "naruto",
-			Usage: "input cartoon path",
+			Usage: "cartoon name path",
 		},
 		cli.StringFlag{
 			Name:  "startchapter, sc",
-			Value: "1",
-			Usage: "input start chapter that want to download",
+			Usage: "number start chapter that want to download",
 		},
 		cli.StringFlag{
 			Name:  "endchapter, ec",
-			Value: "12",
-			Usage: "input end chapter that want to download",
+			Usage: "number end chapter that want to download",
 		},
 		cli.StringFlag{
 			Name:  "destination, d",
-			Value: "../mycartoon",
-			Usage: "input destination path",
+			Usage: "output destination path",
 		},
 	}
 
